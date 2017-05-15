@@ -1,0 +1,35 @@
+ManifestFileVersion: 0
+CRC: 463605292
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: cf2d1b117a36c113062d2bfb842056a4
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: be9e3a5a6ed80cd6e316a8d408ffb13c
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: b69c3318916e6014c98424239291d7b0, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 425d0f6c03a89ec47889e8de4f5d922a, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+Assets:
+- Assets/Artwork/Models/Poly Art Tiger/Animals Packs/01 Forest Pack/Tiger/Prefabs/Tiger
+  Magic.prefab
+Dependencies: []
