@@ -28,4 +28,4 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
-Seekwhale_ios/Library/
+/Library/

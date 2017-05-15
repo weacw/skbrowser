@@ -1,4 +1,0 @@
-sceneSetups:
-- path: Assets/Artwork/Scenes/SK-Browser.unity
-  isLoaded: 1
-  isActive: 1
