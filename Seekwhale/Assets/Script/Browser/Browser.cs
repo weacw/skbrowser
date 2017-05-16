@@ -38,23 +38,21 @@ namespace SeekWhale
 
         private void Start()
         {
-            GetNetreachable(true);
-            //Debug.Log("internet reachability "+Application.internetReachability);
-              switch (Application.internetReachability)
+            switch (Application.internetReachability)
             {
-                case NetworkReachability.NotReachable:
-                    //   Uimanager.Getinstance().Showtips("当前网络不可用");
+                case NetworkReachability.NotReachable:                    
                     netreachable = false;
                     break;
                 case NetworkReachability.ReachableViaCarrierDataNetwork:
-                    //           Uimanager.Getinstance().Showtips("当前网络为3G/4G");
+                    Uimanager.Getinstance().Showtips("当前网络为3G/4G");
                     netreachable = true;
                     break;
                 case NetworkReachability.ReachableViaLocalAreaNetwork:
-                    //      Uimanager.Getinstance().Showtips("已连接到WIFI");
+                    Uimanager.Getinstance().Showtips("已连接到WIFI");
                     netreachable = true;
                     break;
             }
+            GetNetreachable(true);
         }
 
         private void OnDisable()
@@ -158,8 +156,8 @@ namespace SeekWhale
                 return;
             }
 
-            
-            browser_download = Downloadasset(new WWW(_url),_successcallback, _failederrorcallback, _object);
+
+            browser_download = Downloadasset(new WWW(_url), _successcallback, _failederrorcallback, _object);
             StartCoroutine(browser_download);
         }
         private void Openbrowser(string _url, Action<string> _successcallback, Action<string> _failederrorcallback)
@@ -176,7 +174,7 @@ namespace SeekWhale
 
         public void Connectoserver(Action<string> _successcallback, Action<string> _failederrorcallback)
         {
-            Openbrowser(browserdata.querysingletable,  _successcallback, _failederrorcallback);
+            Openbrowser(browserdata.querysingletable, _successcallback, _failederrorcallback);
         }
 
         public void Getitems(string _trackerid, Action<string> _successcallback, Action<string> _failederrorcallback)
