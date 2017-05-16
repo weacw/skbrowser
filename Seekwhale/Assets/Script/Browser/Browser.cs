@@ -36,10 +36,10 @@ namespace SeekWhale
             protected set;
         }
 
-        private void Awake()
+        private void Start()
         {
             GetNetreachable(true);
-            Debug.Log(Application.internetReachability);
+            //Debug.Log("internet reachability "+Application.internetReachability);
               switch (Application.internetReachability)
             {
                 case NetworkReachability.NotReachable:
