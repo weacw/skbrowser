@@ -27,8 +27,7 @@ namespace SeekWhale
         public Dictionary<string, GameObject> categroygos = new Dictionary<string, GameObject>();
         //public Dictionary<string, Itemsetup> itemsgos = new Dictionary<string, Itemsetup>();
         public List<Itemsetup> items = new List<Itemsetup>();
-        [SerializeField]
-        internal List<GameObject> tips = new List<GameObject>();
+        [SerializeField] internal List<GameObject> tips = new List<GameObject>();
         private Dictionary<string, Baseview> viewdictionary = new Dictionary<string, Baseview>();
         private IEnumerator coroutine;
 
@@ -43,7 +42,6 @@ namespace SeekWhale
             coroutine = Updatedownloadprogress();
             foreach (Baseview view in views)
             {
-                view.Initview();
                 Addviewtodictioary(view.viewid, view);
             }
             views.Clear();
@@ -92,7 +90,7 @@ namespace SeekWhale
 
             GameObject targetview = bview.gameObject;
             targetview.SetActive(true);
-            bview.Updateviewstatus();
+            //bview.Updateviewstatus();
         }
 
         /// <summary>
@@ -105,7 +103,7 @@ namespace SeekWhale
             Baseview bview = Getviewfromviewid(_viewid);
 
             GameObject targetview = bview.gameObject;
-            bview.Updateviewstatus();
+            // bview.Updateviewstatus();
         }
 
         /// <summary>
@@ -116,7 +114,7 @@ namespace SeekWhale
             if (SKassetbundlehelper.instance.bundlewww == null)
                 return;
             scanview = Getscanview();
-            scanview.Updateviewstatus();
+            //scanview.Updateviewstatus();
             if (coroutine != null)
                 StartCoroutine(coroutine);
             else
@@ -142,7 +140,7 @@ namespace SeekWhale
             scanview.progress.gameObject.SetActive(false);
             scanview.progress.value = 0;
 
-            scanview.Updateviewstatus();
+            //scanview.Updateviewstatus();
         }
 
 
@@ -163,7 +161,8 @@ namespace SeekWhale
             tmp.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
             tmp.GetComponent<Tipsview>().Setupmsg(msg);
 
-            if (Scannermanager.Getinstance().Getcurrecostatus != Scanstatus.STOPSCANNING || !Scannermanager.Getinstance().isinited)
+            if (Scannermanager.Getinstance().Getcurrecostatus != Scanstatus.STOPSCANNING ||
+                !Scannermanager.Getinstance().isinited)
                 Hideprogress();
 
             //((Tipsview)Getviewfromviewid(typeof(Tipsview).Name)).Setupmsg(msg);
@@ -180,7 +179,7 @@ namespace SeekWhale
             int count = tmp.result.Count - itemlist.result.Count;
             if (count > 0)
             {
-                Showcaseview showcase = Getviewfromviewid(typeof(Showcaseview).Name) as Showcaseview;
+                Showcaseview showcase = Getviewfromviewid(typeof (Showcaseview).Name) as Showcaseview;
                 for (int i = 0; i < tmp.result.Count; i++)
                 {
                     itemlist.result.Add(tmp.result[i]);
@@ -234,9 +233,9 @@ namespace SeekWhale
 
                     Tweener tw2 = image.DOFade(0, 1f);
                     tw2.OnComplete(() =>
-                      {
-                          Destroy(fadegameobject, 0.5f);
-                      });
+                    {
+                        Destroy(fadegameobject, 0.5f);
+                    });
                     tw2.SetDelay(0.5f);
                     if (_callback != null)
                         _callback.Invoke();
@@ -253,13 +252,13 @@ namespace SeekWhale
         private void Viewop()
         {
             //界面之间的逻辑切换
-            Baseview scanview = Uimanager.Getinstance().Getviewfromviewid(typeof(Scanview).Name);
-            Baseview caseview = Uimanager.Getinstance().Getviewfromviewid(typeof(Showcaseview).Name);
-            Baseview detailview = Uimanager.Getinstance().Getviewfromviewid(typeof(Detaildescriptionview).Name);
+            Baseview scanview = Uimanager.Getinstance().Getviewfromviewid(typeof (Scanview).Name);
+            Baseview caseview = Uimanager.Getinstance().Getviewfromviewid(typeof (Showcaseview).Name);
+            Baseview detailview = Uimanager.Getinstance().Getviewfromviewid(typeof (Detaildescriptionview).Name);
 
-            Uistack.Getinstance().Douiop(caseview, Uistackoptype.HIDE, caseview.viewid);
-            Uistack.Getinstance().Douiop(detailview, Uistackoptype.HIDE, detailview.viewid);
-            Uistack.Getinstance().Douiop(scanview, Uistackoptype.SHOW, scanview.viewid);
+            //Uistack.Getinstance().Openview(caseview, Viewstatus.HIDE, caseview.viewid);
+            //Uistack.Getinstance().Openview(detailview, Viewstatus.HIDE, detailview.viewid);
+            //Uistack.Getinstance().Openview(scanview, Viewstatus.SHOW, scanview.viewid);
         }
 
 
@@ -291,8 +290,8 @@ namespace SeekWhale
             if (scanview == null)
             {
                 Baseview bv;
-                viewdictionary.TryGetValue(typeof(Scanview).Name, out bv);
-                return scanview = ((Scanview)bv);
+                viewdictionary.TryGetValue(typeof (Scanview).Name, out bv);
+                return scanview = ((Scanview) bv);
             }
             return scanview;
         }
@@ -315,8 +314,9 @@ namespace SeekWhale
             Texture2D t2d = new Texture2D(128, 128, TextureFormat.RGB24, false);
             t2d.LoadImage(_thumbnails);
 
-            Image thumbnails = (Image)(_object);
-            thumbnails.sprite = Sprite.Create(t2d, new Rect(0, 0, 128, 128), new Vector2(0.5f, 0.5f), 100, 0, SpriteMeshType.FullRect);
+            Image thumbnails = (Image) (_object);
+            thumbnails.sprite = Sprite.Create(t2d, new Rect(0, 0, 128, 128), new Vector2(0.5f, 0.5f), 100, 0,
+                SpriteMeshType.FullRect);
         }
 
         private void Ontakephoto()
@@ -361,7 +361,7 @@ namespace SeekWhale
 
             if (count > 0)
             {
-                Showcaseview showcase = Getviewfromviewid(typeof(Showcaseview).Name) as Showcaseview;
+                Showcaseview showcase = Getviewfromviewid(typeof (Showcaseview).Name) as Showcaseview;
                 for (int i = 0; i < count; i++)
                 {
                     categroy.result.Add(new Categroy());

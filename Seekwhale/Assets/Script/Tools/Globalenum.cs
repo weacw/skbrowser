@@ -63,7 +63,7 @@
         DOWNLOADFILES
     };
 
-    public enum Uistackoptype : int
+    public enum Viewstatus : int
     {
         HIDE,
         SHOW,

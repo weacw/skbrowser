@@ -49,20 +49,25 @@
         protected void Projectconfig()
         {
 
-            Projectconfig config = CreateInstance<Projectconfig>();
+         
+            EditorGUILayout.BeginVertical("Box");
+            EditorGUILayout.LabelField("Prject config");
+            EditorGUILayout.BeginHorizontal("Box");
             if (!string.IsNullOrEmpty(fullpath))
                 EditorGUILayout.LabelField("Path: " + fullpath);
             else
                 EditorGUILayout.LabelField("Path: " + tmppath);
+            EditorGUILayout.EndHorizontal();
 
             if (GUILayout.Button("Select folder", "PreButton"))
             {
-                fullpath = EditorUtility.SaveFilePanel("Create config", "", config.GetInstanceID().ToString(), "asset");
+                fullpath = EditorUtility.SaveFilePanel("Create config", "", "", "asset");
             }
             GUI.color = Color.white;
 
             if (GUILayout.Button("Save config"))
             {
+                Projectconfig config = CreateInstance<Projectconfig>();
                 if (string.IsNullOrEmpty(fullpath)) return;
                 int id = fullpath.IndexOf("Asset");
                 string shortpath = fullpath.Substring(id, fullpath.Length - id);
@@ -73,6 +78,39 @@
                 EditorGUIUtility.PingObject(config);
                 config = null;
             }
+            EditorGUILayout.EndVertical();
+
+            EditorGUILayout.BeginVertical("Box");
+            EditorGUILayout.LabelField("Server config");
+            EditorGUILayout.BeginHorizontal("Box");
+            if (!string.IsNullOrEmpty(fullpath))
+                EditorGUILayout.LabelField("Path: " + fullpath);
+            else
+                EditorGUILayout.LabelField("Path: " + tmppath);
+            EditorGUILayout.EndHorizontal();
+
+            if (GUILayout.Button("Select folder", "PreButton"))
+            {
+                fullpath = EditorUtility.SaveFilePanel("Create config", "", "", "asset");
+            }
+            GUI.color = Color.white;
+
+            if (GUILayout.Button("Save config"))
+            {
+                Browserdata data = CreateInstance<Browserdata>();
+                if (string.IsNullOrEmpty(fullpath)) return;
+                int id = fullpath.IndexOf("Asset");
+                string shortpath = fullpath.Substring(id, fullpath.Length - id);
+                AssetDatabase.CreateAsset(data, shortpath);
+                AssetDatabase.SaveAssets();
+                EditorUtility.SetDirty(data);               
+                AssetDatabase.Refresh(ImportAssetOptions.Default);
+                EditorGUIUtility.PingObject(data);
+                data = null;
+            }
+            EditorGUILayout.EndVertical();
+
+
         }
         protected void Bundlecreator()
         {

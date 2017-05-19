@@ -106,6 +106,9 @@ namespace SeekWhale
             markerlessclosebtn.onClick.RemoveAllListeners();
             markerlesscdownloadbtn.onClick.RemoveAllListeners();
 
+
+            Scannermanager.Getinstance().onparsingitemend = null;
+
             //clean cache
             mediaplayer.m_strFileName = null;
             mediaplayer.Stop();
@@ -125,29 +128,29 @@ namespace SeekWhale
                 Uimanager.Getinstance().Showtips("资源正在下载中");
                 return;
             }
-                //检查资源是否有缓存
-                if (!SKassetbundlehelper.instance.Checkcache(item.Getitemurl(), item.version))
+            //检查资源是否有缓存
+            if (!SKassetbundlehelper.instance.Checkcache(item.Getitemurl(), item.version))
+            {
+                isdownloading = true;
+                //检查网络是否可用
+                if (!Browser.Getinstance().GetNetreachable(false))
                 {
-                    isdownloading = true;
-                    //检查网络是否可用
-                    if (!Browser.Getinstance().GetNetreachable(false))
-                    {
-                        return;
-                    }
-                    //载入资源
-                    StartCoroutine(SKassetbundlehelper.instance.Paringbundle(item.Getitemurl(), item.version, Ondownloaded));
+                    return;
                 }
-                else
-                {
-                    //由showcase界面下载进入到scan view 解析模型资源
-                    StartCoroutine(SKassetbundlehelper.instance.Paringbundle(item.Getitemurl(), item.version,
-                          Scannermanager.Getinstance().Parsingbundlecallback));
+                //载入资源
+                StartCoroutine(SKassetbundlehelper.instance.Paringbundle(item.Getitemurl(), item.version, Ondownloaded));
+            }
+            else
+            {
+                //由showcase界面下载进入到scan view 解析模型资源
+                StartCoroutine(SKassetbundlehelper.instance.Paringbundle(item.Getitemurl(), item.version,
+                      Scannermanager.Getinstance().Parsingbundlecallback));
 
-                    //黑色浸入
-                    //Uimanager.Getinstance().Addblackfade(true,null);
-                    Viewop();
-                    // Viewop();
-                }
+                //黑色浸入
+                //Uimanager.Getinstance().Addblackfade(true,null);
+                //Viewop();
+                // Viewop();
+            }
         }
 
         private void Viewop()
@@ -157,9 +160,9 @@ namespace SeekWhale
             Baseview caseview = Uimanager.Getinstance().Getviewfromviewid(typeof(Showcaseview).Name);
             Baseview detailview = Uimanager.Getinstance().Getviewfromviewid(typeof(Detaildescriptionview).Name);
 
-            Uistack.Getinstance().Douiop(caseview, Uistackoptype.HIDE, caseview.viewid);
-            Uistack.Getinstance().Douiop(detailview, Uistackoptype.HIDE, detailview.viewid);
-            Uistack.Getinstance().Douiop(scanview, Uistackoptype.SHOW, scanview.viewid);
+            Uistack.Getinstance().Openview(caseview, Viewstatus.HIDE);
+            Uistack.Getinstance().Openview(detailview, Viewstatus.HIDE);
+            Uistack.Getinstance().Openview(scanview, Viewstatus.HIDE);
         }
 
 
@@ -181,6 +184,9 @@ namespace SeekWhale
         /// </summary>
         private void Btneventbind()
         {
+
+            Scannermanager.Getinstance().onparsingitemend = Viewop;
+
             //获取识别图缩略图
             markless.onClick.AddListener(() =>
             {

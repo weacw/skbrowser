@@ -25,7 +25,7 @@ namespace SeekWhale
         public Scanstatus Getcurrecostatus;// { get;  set; }
         public Metadata metadaats { get; set; }
         public bool isscanning { get; set; }
-
+        public Action onparsingitemend;
 
         internal bool isinited;
 
@@ -86,6 +86,10 @@ namespace SeekWhale
                     Ontrackerfoundevent(imagetracker, null);
                     break;
             }
+
+
+            if(onparsingitemend!=null)
+                onparsingitemend.Invoke();
         }
 
 
@@ -113,7 +117,7 @@ namespace SeekWhale
 
             curtrackerstatus = Trackerstatus.FOUND;
             Scanview scanview = (Scanview)Uimanager.Getinstance().Getviewfromviewid(typeof(Scanview).Name);
-            scanview.Updateviewstatus();
+            scanview.Updateviewstatus(Viewstatus.SHOW);
             if (_imagetargettracker.targetdata.Instantiatedobject != null)
                 _imagetargettracker.targetdata.Brokenlink();
         }

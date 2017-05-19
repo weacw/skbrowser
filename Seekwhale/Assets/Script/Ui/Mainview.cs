@@ -24,27 +24,26 @@
         public override void Initview()
         {
             base.Initview();
-            viewenabled = true;
-            moveto = new Vector3(selfrecttransform.anchoredPosition.x, -selfrecttransform.rect.height);
-            orignalpos = new Vector3(selfrecttransform.anchoredPosition.x, 0);
+            movementtoffset = new Vector3(self.anchoredPosition.x, -self.rect.height);
+            originaloffset = self.anchoredPosition3D;
         }
 
         public override void Bindingeventstobtn()
         {
             Baseview hide = Uimanager.Getinstance().Getviewfromviewid(typeof(Mainview).Name);
-
+            Debug.Log("ADD");
             showcase.onClick.AddListener(() =>
             {
                 Baseview show = Uimanager.Getinstance().Getviewfromviewid(typeof(Showcaseview).Name);
-                Uistack.Getinstance().Douiop(hide, Uistackoptype.HIDE,hide.viewid);
-                Uistack.Getinstance().Douiop(show, Uistackoptype.SHOW,show.viewid);
+                Uistack.Getinstance().Openview(show, Viewstatus.SHOW);
+                Uistack.Getinstance().Openview(hide, Viewstatus.SHOW);
             });
 
             menu.onClick.AddListener(() =>
             {
                 Baseview show = Uimanager.Getinstance().Getviewfromviewid(typeof(Menuview).Name);
-                Uistack.Getinstance().Douiop(hide, Uistackoptype.HIDE,hide.viewid);
-                Uistack.Getinstance().Douiop(show, Uistackoptype.SHOW,show.viewid);
+                Uistack.Getinstance().Openview(show, Viewstatus.SHOW);
+                Uistack.Getinstance().Openview(hide, Viewstatus.SHOW);
             });
 
             gotoscan.onClick.AddListener(() =>
@@ -52,14 +51,15 @@
                 Cloudrecoeventhandler.Getinstance().Restartscanning();
 
                 Baseview show = Uimanager.Getinstance().Getviewfromviewid(typeof(Scanview).Name);
-                Uistack.Getinstance().Douiop(hide, Uistackoptype.HIDE,hide.viewid);
-                Uistack.Getinstance().Douiop(show, Uistackoptype.SHOW,show.viewid);
+                Uistack.Getinstance().Openview(show, Viewstatus.SHOW);
+                Uistack.Getinstance().Openview(hide, Viewstatus.SHOW);
             });
         }
 
-        public override void Updateviewstatus()
-        {
-            base.Updateviewstatus();
+        public override void Updateviewstatus(Viewstatus _viewstatus)
+        {                      
+            base.Updateviewstatus(_viewstatus);
+            Uimanager.Getinstance().Getviewfromviewid(typeof (Signelement).Name).Updateviewstatus(_viewstatus);
         }
     }
 }

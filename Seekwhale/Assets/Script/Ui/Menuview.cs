@@ -38,14 +38,14 @@
             aboutbtn.onClick.AddListener(() =>
             {
                 Baseview show = Uimanager.Getinstance().Getviewfromviewid(typeof(Aboutview).Name);
-                Uistack.Getinstance().Douiop(show, Uistackoptype.SHOW,viewid);
+                Uistack.Getinstance().Openview(show, Viewstatus.SHOW);
             });
         }
 
-        public override void Updateviewstatus()
+        public override void Updateviewstatus(Viewstatus _viewstatus)
         {
             Calculaterspaceoccupied();
-            base.Updateviewstatus();
+            base.Updateviewstatus(_viewstatus);
         }
 
         private void Calculaterspaceoccupied()
@@ -56,8 +56,8 @@
         public override void Initview()
         {
             base.Initview();
-            moveto = new Vector3(selfrecttransform.anchoredPosition.x, -selfrecttransform.rect.height);
-            orignalpos = new Vector3(selfrecttransform.anchoredPosition.x, 0);
+            movementtoffset = Vector3.zero;
+            originaloffset = self.anchoredPosition3D;
         }
     }
 }

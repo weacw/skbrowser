@@ -21,7 +21,7 @@ namespace SeekWhale
         protected IEnumerator browser_download;
         protected bool netreachable;
         protected const float TIME_OUT = 5;
-
+        protected Browserdata browserdata;
 
         public bool GetNetreachable(bool _showtip)
         {
@@ -38,6 +38,7 @@ namespace SeekWhale
 
         private void Start()
         {
+            browserdata = Resources.Load<Browserdata>("Clientconfig");
             switch (Application.internetReachability)
             {
                 case NetworkReachability.NotReachable:                    
@@ -75,7 +76,7 @@ namespace SeekWhale
             {
                 Debug.LogError("ERROR:" + Getaccesssqlwww.error);
                 if (_failederrorcallback != null)
-                    _failederrorcallback.Invoke(Getaccesssqlwww.error);
+                    _failederrorcallback.Invoke(Parseerrorcode(Getaccesssqlwww.error));
                 //TODO:网络连接错误提示
                 yield break;
             }
@@ -101,7 +102,7 @@ namespace SeekWhale
             {
                 Debug.LogError("ERROR:" + _www.error);
                 if (_failederrorcallback != null)
-                    _failederrorcallback.Invoke(_www.error);
+                    _failederrorcallback.Invoke(Parseerrorcode(_www.error));
                 //TODO:网络连接错误提示
                 yield break;
             }
@@ -122,9 +123,9 @@ namespace SeekWhale
         /// 需要提交给服务器的基本表单
         /// </summary>
         /// <returns></returns>
-        private static WWWForm Getwwwform()
+        private  WWWForm Getwwwform()
         {
-            WWWForm wwwform = new WWWForm();
+            WWWForm wwwform = new WWWForm();            
             wwwform.AddField(browserdata.post_db_user, browserdata.db_user);
             wwwform.AddField(browserdata.post_db_name, browserdata.db_name);
             wwwform.AddField(browserdata.post_db_passworld, browserdata.db_passworld);
@@ -190,7 +191,6 @@ namespace SeekWhale
             var wwwform = Getwwwform();
             wwwform.AddField(browserdata.post_db_table_name, browserdata.table_items);
             Openbrowser(browserdata.queryentiretable, wwwform, _successcallback, _failederrorcallback);
-            Debug.Log("Get item");
         }
 
         public void Getcatergory(Action<string> _successcallback, Action<string> _failederrorcallback)
@@ -208,6 +208,12 @@ namespace SeekWhale
         internal T Getdatafromjson<T>(string _json)
         {
             return JsonUtility.FromJson<T>(_json);
+        }
+
+
+        private string Parseerrorcode(string _errormsg)
+        {
+            return _errormsg.Split(':')[1];
         }
     }
 }

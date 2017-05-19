@@ -30,7 +30,7 @@ namespace SeekWhale
         public void Addfuntobtn()
         {
             Baseview show = Uimanager.Getinstance().Getviewfromviewid(typeof(Detaildescriptionview).Name);
-            Uistack.Getinstance().Douiop(show,Uistackoptype.SHOW,show.viewid);
+            Uistack.Getinstance().Openview(show,Viewstatus.SHOW);
             Setupdetails();
         }
 

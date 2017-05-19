@@ -26,7 +26,7 @@ namespace SeekWhale
 
             returnbtn.onClick.AddListener(() =>
             {
-                Uistack.Getinstance().Return();
+                Uistack.Getinstance().Return(2);
             });
         }
 
@@ -34,15 +34,15 @@ namespace SeekWhale
         {
             base.Initview();
             viewenabled = false;
-            moveto = new Vector3(selfrecttransform.rect.width, 0, 0);
-            orignalpos = new Vector3(0, 0);
+            movementtoffset =Vector3.zero;
+            originaloffset = self.anchoredPosition3D;
             detailsetup = GetComponent<Detailsetup>();
             detailsetup.enabled = false;
         }
 
-        public override void Updateviewstatus()
+        public override void Updateviewstatus(Viewstatus _viewstatus)
         {
-            base.Updateviewstatus();
+            base.Updateviewstatus(_viewstatus);
             if (!viewenabled)
                 detailsetup.enabled = viewenabled;
         }

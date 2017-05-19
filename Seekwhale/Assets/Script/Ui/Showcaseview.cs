@@ -23,7 +23,8 @@ namespace SeekWhale
 
         public Transform verticalroot;
         public Transform horizontalroot;
-        protected override void Start()
+
+        public override void Start()
         {
             base.Start();
         }
@@ -32,10 +33,11 @@ namespace SeekWhale
         {
             base.Initview();
             getdatas = Getdatas.GETTING;
-            viewenabled = false;
-            moveto = new Vector3(selfrecttransform.anchoredPosition.x, -selfrecttransform.rect.height);
-            orignalpos = new Vector3(selfrecttransform.anchoredPosition.x, 0);
+            movementtoffset =Vector3.zero;
+            originaloffset = self.anchoredPosition3D;
+            callback = Getdata;
         }
+
         public override void Bindingeventstobtn()
         {
             //show case view 返回至首页
@@ -46,24 +48,14 @@ namespace SeekWhale
             });
         }
 
-        public override void Updateviewstatus()
+        public override void Updateviewstatus(Viewstatus _viewstatus)
         {
-            if (callback == null)
-                callback = Getdata;
-
-            base.Updateviewstatus();
+            base.Updateviewstatus(_viewstatus);
         }
 
         private void Getdata()
         {
-            StartCoroutine(Waittingtoload());
-        }
-
-        private IEnumerator Waittingtoload()
-        {
-            yield return new WaitForEndOfFrame();       
-
-            if (!viewenabled || getdatas != Getdatas.GETTING) yield break;
+            if (getdatas != Getdatas.GETTING) return;
             if (Browser.Getinstance().GetNetreachable(false))
                 Uimanager.Getinstance().Showtips("数据加载中...");
             //TODO:1.显示提示            

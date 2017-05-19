@@ -29,8 +29,8 @@ namespace SeekWhale
         {
             base.Initview();
             viewenabled = true;
-            moveto = new Vector3(selfrecttransform.anchoredPosition.x, 0);
-            orignalpos = new Vector3(0, 0);
+            movementtoffset = Vector3.zero;
+            originaloffset = self.anchoredPosition;
         }
     }
 }

@@ -65,7 +65,7 @@ namespace SeekWhale
                 else
                 {
                     Cloudrecoeventhandler.Getinstance().Restartscanning();
-                    Updateviewstatus();
+                    Updateviewstatus(Viewstatus.SHOW);
                 }
             });
 
@@ -85,19 +85,19 @@ namespace SeekWhale
             Takephotoorrecord.Getinstance().Recording.onrecording = Updaterecordingprogress;
         }
 
-        public override void Updateviewstatus()
+        public override void Updateviewstatus(Viewstatus _viewstatus)
         {
+            //base.Updateviewstatus(_viewstatus);
             switch (Scannermanager.Getinstance().Getcurrecostatus)
             {
                 case Scanstatus.GOTOSCAN:
-                    Debug.Log(blur.enabled);
                     scaned.SetActive(false);
                     scanning.SetActive(true);
                     progress.gameObject.SetActive(false);
                     back.gameObject.SetActive(true);
                     if (blur.enabled)
                     {
-                        base.Updateviewstatus();
+                        //base.Updateviewstatus(_viewstatus);
                         blur.enabled = false;
                     }
                     break;
@@ -112,7 +112,6 @@ namespace SeekWhale
                     scanning.SetActive(false);
                     progress.gameObject.SetActive(false);
                     back.gameObject.SetActive(false);
-
                     blur.enabled = false;
                     break;
                 case Scanstatus.STOPSCANNING:
@@ -121,9 +120,10 @@ namespace SeekWhale
                     progress.gameObject.SetActive(false);
                     back.gameObject.SetActive(false);
                     blur.enabled = true;
-                    base.Updateviewstatus();
+                    base.Updateviewstatus(_viewstatus);
                     break;
             }
+           base.Updateviewstatus(_viewstatus);
         }
         public override void Initview()
         {

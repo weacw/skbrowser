@@ -34,19 +34,9 @@ namespace SeekWhale
             return bv;
         }
 
-        public void Douiop(Baseview _opview, Uistackoptype _uistackoptype, string _callname, Action _onend = null)
+        public void Openview(Baseview _opview, Viewstatus _viewstatus)
         {
-           switch (_uistackoptype)
-            {
-                case Uistackoptype.HIDE:
-                    _opview.viewenabled = false;
-                    Push(_opview).Updateviewstatus();
-                    break;
-                case Uistackoptype.SHOW:
-                    _opview.viewenabled = true;
-                    Push(_opview).Updateviewstatus();
-                    break;
-            }
+            Push(_opview).Updateviewstatus(_viewstatus);
         }
 
         public void Return(int depth = 1)
@@ -54,7 +44,8 @@ namespace SeekWhale
             for (int i = 0; i < depth; i++)
             {
                 Baseview bv_a = Pop();
-                bv_a.Updateviewstatus();
+                if (bv_a != null)
+                    bv_a.Updateviewstatus(Viewstatus.HIDE);
             }
         }
 

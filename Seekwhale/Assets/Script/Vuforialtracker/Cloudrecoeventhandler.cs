@@ -27,10 +27,7 @@
             cloudrecobehaviour = GetComponent<CloudRecoBehaviour>();
             if (cloudrecobehaviour)
                 cloudrecobehaviour.RegisterEventHandler(this);
-        }
 
-        private void Start()
-        {
             sm = Scannermanager.Getinstance();
             Stopscanning();
         }

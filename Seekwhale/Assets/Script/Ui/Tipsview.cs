@@ -31,10 +31,10 @@ namespace SeekWhale
         private IEnumerator Waittingtohide()
         {
             yield return new WaitForSeconds(waitseconds);
-            Updateviewstatus();
+            Updateviewstatus(Viewstatus.HIDE);
             callback = null;
             Uimanager.Getinstance().tips.Remove(this.gameObject);
-            Destroy(this.gameObject,1f);
+            Destroy(this.gameObject, 1f);
         }
 
 
@@ -46,8 +46,9 @@ namespace SeekWhale
         public override void Initview()
         {
             base.Initview();
-            moveto = new Vector3(0, selfrecttransform.rect.height/2);
-            orignalpos = new Vector3(0, -selfrecttransform.rect.height / 2);
+
+            originaloffset = new Vector3(0, self.rect.height / 2);
+            movementtoffset = new Vector3(0, -self.rect.height / 2);
             viewenabled = true;
         }
 
@@ -56,11 +57,11 @@ namespace SeekWhale
             if (!isinited)
                 Initview();
             msgtext.text = _msg;
-            Updateviewstatus();
-             Autohide();
+            Updateviewstatus(Viewstatus.SHOW);
+            Autohide();
         }
 
-        public override void Updateviewstatus()
+        public override void Updateviewstatus(Viewstatus _viewstatus)
         {
             if (Uimanager.Getinstance().tips.Count >= 2)
             {
@@ -72,7 +73,7 @@ namespace SeekWhale
                 }
             }
 
-            base.Updateviewstatus();
+            base.Updateviewstatus(_viewstatus);
 
         }
     }

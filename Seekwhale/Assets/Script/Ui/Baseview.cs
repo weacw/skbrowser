@@ -1,4 +1,6 @@
-﻿namespace SeekWhale
+﻿using System;
+
+namespace SeekWhale
 {
     /*
 	* 功 能： N/A
@@ -13,85 +15,101 @@
     using UnityEngine;
     using UnityEngine.UI;
     using DG.Tweening;
-    [RequireComponent(typeof(CanvasGroup))]
     public abstract class Baseview : MonoBehaviour
     {
+
+
+        public Action ontweenover;
         [SerializeField]
         internal string viewid;
         [SerializeField]
         internal bool viewenabled;
         [SerializeField]
         internal bool isinited;
+        [SerializeField]
+        internal bool callbackonlydisplay = true;
+        [SerializeField]
+        internal float delayeforcallback = 1f;
+
+
         internal TweenCallback callback;
 
         public AnimationCurve actioncurve;
         [Range(0.1f, 1f)]
         public float duration;
-        public Vector3 moveto;
 
-        protected RectTransform selfrecttransform;
-        protected CanvasGroup canvasgroup;
-        protected Vector3 orignalpos;
+        protected RectTransform self;
+
+
+        [SerializeField]
+        protected Vector3 movementtoffset;
         [SerializeField]
         protected Getdatas getdatas;
 
-        public virtual void Updateviewstatus()
+        protected Vector3 originaloffset;
+
+
+        public virtual void Updateviewstatus(Viewstatus _viewstatus)
         {
-            Vector3 targetpos = Vector3.zero;
-            float fadevalue = 0;
-
-
-            if (viewenabled)
+            Tweener tweeners = null;
+            switch (_viewstatus)
             {
-                targetpos = orignalpos;
-                fadevalue = 1;
+                case Viewstatus.HIDE:
+                    if (Vector2.Distance(originaloffset, self.anchoredPosition) <= 1)
+                        tweeners = self.DOAnchorPos(movementtoffset, duration);
+                    else
+                        tweeners = self.DOAnchorPos(originaloffset, duration);
+                    tweeners.SetAutoKill(true);
+                    break;
+                case Viewstatus.SHOW:
+                    tweeners = self.DOAnchorPos(movementtoffset, duration);
+                    tweeners.SetAutoKill(true);
+
+
+                    if (callback != null && tweeners != null)
+                        tweeners.OnComplete(() =>
+                        {
+                            Executecallback();
+                        });
+
+                    break;
             }
-            else
-            {
-                //窗体正处于显示状态，触发后回收窗体 selfrecttransform.anchoredPosition.x, -selfrecttransform.rect.height
-                targetpos = moveto;
-                fadevalue = 0;
-            }
-
-
-
-            Tweener domove = null;
-            Tweener dofade = null;
-
-
-            domove = selfrecttransform.DOAnchorPos(targetpos, duration);
-            dofade = canvasgroup.DOFade(fadevalue, duration + 0.25f);
-            domove.SetEase(actioncurve);
-            domove.SetAutoKill(true);
-            dofade.SetAutoKill(true);
-            if (callback != null)
-            {
-                domove.OnComplete(() =>
-                {
-                    callback.Invoke();
-                });
-            }
-            dofade.OnComplete(() =>
-             {
-                 viewenabled = !viewenabled;
-             });
+            tweeners.SetEase(actioncurve);
+            if (ontweenover != null)
+                tweeners.OnComplete(ontweenover.Invoke);
         }
+
         public abstract void Bindingeventstobtn();
+
         public virtual void Initview()
         {
-            canvasgroup = GetComponent<CanvasGroup>();
-            selfrecttransform = GetComponent<RectTransform>();
+
+            self = GetComponent<RectTransform>();
+            originaloffset = self.anchoredPosition3D;
             viewid = GetType().Name;
-            viewenabled = false;
+
             Uimanager.Getinstance().Addviewtodictioary(viewid, this);
             Bindingeventstobtn();
-            isinited = true;
         }
 
-        protected virtual void Start()
+        public virtual void Start()
         {
-            if (!isinited)
-                Initview();
+            Initview();
+        }
+
+
+
+
+        private void Executecallback()
+        {
+            StartCoroutine(Delayexecution());
+        }
+
+
+        private IEnumerator Delayexecution()
+        {
+            yield return new WaitForSeconds(delayeforcallback);
+            callback.Invoke();
         }
     }
 }
