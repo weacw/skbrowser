@@ -27,7 +27,8 @@ namespace SeekWhale
         public Dictionary<string, GameObject> categroygos = new Dictionary<string, GameObject>();
         //public Dictionary<string, Itemsetup> itemsgos = new Dictionary<string, Itemsetup>();
         public List<Itemsetup> items = new List<Itemsetup>();
-        [SerializeField] internal List<GameObject> tips = new List<GameObject>();
+        [SerializeField]
+        internal List<GameObject> tips = new List<GameObject>();
         private Dictionary<string, Baseview> viewdictionary = new Dictionary<string, Baseview>();
         private IEnumerator coroutine;
 
@@ -179,7 +180,7 @@ namespace SeekWhale
             int count = tmp.result.Count - itemlist.result.Count;
             if (count > 0)
             {
-                Showcaseview showcase = Getviewfromviewid(typeof (Showcaseview).Name) as Showcaseview;
+                Showcaseview showcase = Getviewfromviewid(typeof(Showcaseview).Name) as Showcaseview;
                 for (int i = 0; i < tmp.result.Count; i++)
                 {
                     itemlist.result.Add(tmp.result[i]);
@@ -252,9 +253,9 @@ namespace SeekWhale
         private void Viewop()
         {
             //界面之间的逻辑切换
-            Baseview scanview = Uimanager.Getinstance().Getviewfromviewid(typeof (Scanview).Name);
-            Baseview caseview = Uimanager.Getinstance().Getviewfromviewid(typeof (Showcaseview).Name);
-            Baseview detailview = Uimanager.Getinstance().Getviewfromviewid(typeof (Detaildescriptionview).Name);
+            Baseview scanview = Uimanager.Getinstance().Getviewfromviewid(typeof(Scanview).Name);
+            Baseview caseview = Uimanager.Getinstance().Getviewfromviewid(typeof(Showcaseview).Name);
+            Baseview detailview = Uimanager.Getinstance().Getviewfromviewid(typeof(Detaildescriptionview).Name);
 
             //Uistack.Getinstance().Openview(caseview, Viewstatus.HIDE, caseview.viewid);
             //Uistack.Getinstance().Openview(detailview, Viewstatus.HIDE, detailview.viewid);
@@ -290,8 +291,8 @@ namespace SeekWhale
             if (scanview == null)
             {
                 Baseview bv;
-                viewdictionary.TryGetValue(typeof (Scanview).Name, out bv);
-                return scanview = ((Scanview) bv);
+                viewdictionary.TryGetValue(typeof(Scanview).Name, out bv);
+                return scanview = ((Scanview)bv);
             }
             return scanview;
         }
@@ -301,11 +302,6 @@ namespace SeekWhale
         private IEnumerator Waittoload()
         {
             yield return new WaitForSeconds(0.25f);
-            Getitems();
-        }
-
-        private void Getitems()
-        {
             Browser.Getinstance().Getitemlist(Getitems, Showtips);
         }
 
@@ -314,7 +310,7 @@ namespace SeekWhale
             Texture2D t2d = new Texture2D(128, 128, TextureFormat.RGB24, false);
             t2d.LoadImage(_thumbnails);
 
-            Image thumbnails = (Image) (_object);
+            Image thumbnails = (Image)(_object);
             thumbnails.sprite = Sprite.Create(t2d, new Rect(0, 0, 128, 128), new Vector2(0.5f, 0.5f), 100, 0,
                 SpriteMeshType.FullRect);
         }
@@ -337,10 +333,10 @@ namespace SeekWhale
                 return;
             Takephotoorrecord.Getinstance().Recording.Recordtimeupdate();
 
-//            if (Input.GetMouseButtonUp(0))
-//            {
-//                Auxiliaryfun.Getinstance().Focuson();
-//            }
+            //            if (Input.GetMouseButtonUp(0))
+            //            {
+            //                Auxiliaryfun.Getinstance().Focuson();
+            //            }
         }
 
         public IEnumerator Waittoshowtips(string _msg)
@@ -361,7 +357,7 @@ namespace SeekWhale
 
             if (count > 0)
             {
-                Showcaseview showcase = Getviewfromviewid(typeof (Showcaseview).Name) as Showcaseview;
+                Showcaseview showcase = Getviewfromviewid(typeof(Showcaseview).Name) as Showcaseview;
                 for (int i = 0; i < count; i++)
                 {
                     categroy.result.Add(new Categroy());
@@ -378,6 +374,19 @@ namespace SeekWhale
                 }
             }
             StartCoroutine(Waittoload());
+        }
+
+        /// <summary>
+        /// 获取识别图图片的回调
+        /// </summary>
+        /// <param name="_bytes"></param>
+        /// <param name="_image"></param>
+        internal void Setmarkerless(byte[] _bytes, object _image)
+        {
+            Texture2D t2d = new Texture2D(128, 128, TextureFormat.RGB24, false);
+            t2d.LoadImage(_bytes);
+            Image image = (Image) _image;
+            image.sprite = Sprite.Create(t2d, new Rect(0, 0, 128, 128), new Vector2(0.5f, 0.5f), 100, 0, SpriteMeshType.FullRect);
         }
     }
 }

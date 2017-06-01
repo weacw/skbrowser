@@ -40,6 +40,16 @@
                 Baseview show = Uimanager.Getinstance().Getviewfromviewid(typeof(Aboutview).Name);
                 Uistack.Getinstance().Openview(show, Viewstatus.SHOW);
             });
+            histroy.onClick.AddListener(() =>
+            {
+                Baseview show = Uimanager.Getinstance().Getviewfromviewid(typeof(Histroyview).Name);
+                Uistack.Getinstance().Openview(show, Viewstatus.SHOW);
+            });
+            favorite.onClick.AddListener(() =>
+            {
+                Baseview show = Uimanager.Getinstance().Getviewfromviewid(typeof(Favoriteview).Name);
+                Uistack.Getinstance().Openview(show, Viewstatus.SHOW);
+            });
         }
 
         public override void Updateviewstatus(Viewstatus _viewstatus)

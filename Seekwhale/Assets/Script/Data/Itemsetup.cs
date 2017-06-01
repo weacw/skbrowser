@@ -24,13 +24,15 @@ namespace SeekWhale
 
         public Item item;
 
+        private Baseview detaildescriptionview;        
+
         /// <summary>
         /// 添加按钮事件-下载资源/呈现资源
         /// </summary>
         public void Addfuntobtn()
         {
-            Baseview show = Uimanager.Getinstance().Getviewfromviewid(typeof(Detaildescriptionview).Name);
-            Uistack.Getinstance().Openview(show,Viewstatus.SHOW);
+           
+            Uistack.Getinstance().Openview(detaildescriptionview, Viewstatus.SHOW);
             Setupdetails();
         }
 
@@ -39,15 +41,21 @@ namespace SeekWhale
         /// </summary>
         private void Setupdetails()
         {
-            Baseview show = Uimanager.Getinstance().Getviewfromviewid(typeof(Detaildescriptionview).Name);
-            Detaildescriptionview ddv=((Detaildescriptionview) show);
+            Detaildescriptionview ddv = ((Detaildescriptionview)detaildescriptionview);
             ddv.detailsetup.item = item;
             ddv.detailsetup.enabled = true;
         }
 
         private void Start()
         {
+            detaildescriptionview = Uimanager.Getinstance().Getviewfromviewid(typeof(Detaildescriptionview).Name);
+
+
             clickarea.onClick.AddListener(Addfuntobtn);
+#if VERSION2_0
+            Debug.Log(item.thumbnails);
+            Browser.Getinstance().GetMarkless(item.thumbnails, Uimanager.Getinstance().Setmarkerless, null, background);
+#endif
         }
     }
 }

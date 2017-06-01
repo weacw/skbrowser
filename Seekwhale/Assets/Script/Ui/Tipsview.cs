@@ -12,7 +12,6 @@ namespace SeekWhale
 	*/
 
     using System.Collections;
-    using System.Collections.Generic;
     using UnityEngine;
 
     public class Tipsview : Baseview

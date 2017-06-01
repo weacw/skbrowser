@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using DG.Tweening;
+using Mono.Data.Sqlite;
 using UnityEngine.UI;
 
 namespace SeekWhale
@@ -48,17 +49,25 @@ namespace SeekWhale
         private bool isdownloading;
 
 
+        private void Start()
+        {
+            if (mediaplayer == null)
+                mediaplayer = FindObjectOfType<MediaPlayerCtrl>();
+
+            Btneventbind();
+        }
+
+
 
         /// <summary>
         /// 对按钮添加相应事件
         /// </summary>
         public void OnEnable()
         {
-            Btneventbind();
+
             description.text = item.description;
             title.text = item.itemname;
-            if (mediaplayer == null)
-                mediaplayer = FindObjectOfType<MediaPlayerCtrl>();
+
             if (mediaplayer != null)
             {
                 mediaplayer.Load(item.tutourl);
@@ -79,6 +88,19 @@ namespace SeekWhale
 
             if (item != null)
                 Browser.Getinstance().GetMarkless(item.tutorthumbnail, Setuptutorthumbnail, null, videopayer);
+#if VERSION2_0
+            Sqlitehelper helper = new Sqlitehelper("data source=skbrowser.db");
+            SqliteDataReader sdr = helper.Readfromid("favorite_test", "id", item.id.ToString());
+            if (sdr.HasRows)
+            {
+                favorite.GetComponent<Image>().sprite = Resources.Load<Sprite>("Ui/btn_like_sel");
+            }
+            else
+            {
+                favorite.GetComponent<Image>().sprite = Resources.Load<Sprite>("Ui/btn_like_nor");
+            }
+            helper.CloseSqlConnection();
+#endif
         }
 
         /// <summary>
@@ -106,8 +128,8 @@ namespace SeekWhale
             markerlessclosebtn.onClick.RemoveAllListeners();
             markerlesscdownloadbtn.onClick.RemoveAllListeners();
 
-
-            Scannermanager.Getinstance().onparsingitemend = null;
+            if (Scannermanager.Getinstance().onparsingitemend != null)
+                Scannermanager.Getinstance().onparsingitemend = null;
 
             //clean cache
             mediaplayer.m_strFileName = null;
@@ -115,6 +137,10 @@ namespace SeekWhale
             mediaplayer.UnLoad();
             DestroyImmediate(videopayer.texture);
             videoplayerbtn.gameObject.SetActive(true);
+
+
+            //set favorite to null
+            //favorite.GetComponent<Image>().sprite = Resources.Load<Sprite>("Ui/btn_like_nor");
         }
 
         /// <summary>
@@ -191,7 +217,8 @@ namespace SeekWhale
             markless.onClick.AddListener(() =>
             {
                 markerlessview.SetActive(true);
-                Browser.Getinstance().GetMarkless(item.thumbnails, Setmarkerless, null, markerlessimage);
+                Browser.Getinstance()
+                    .GetMarkless(item.thumbnails, Uimanager.Getinstance().Setmarkerless, null, markerlessimage);
             });
 
             //关闭识别图浮窗
@@ -233,6 +260,44 @@ namespace SeekWhale
                 videoplayerbtn.gameObject.SetActive(true);
                 mediaplayer.Pause();
             });
+
+
+
+
+            favorite.onClick.AddListener(() =>
+            {
+                //TODO:write data to dbs.
+                Adddatatofavoritedb();
+            });
+        }
+
+        private void Adddatatofavoritedb()
+        {
+            Sqlitehelper helper = new Sqlitehelper("data source=skbrowser.db");
+
+
+            SqliteDataReader sdr = helper.Readfromid("favorite_test", "id", item.id.ToString());
+            if (sdr.HasRows)
+            {
+                Uimanager.Getinstance().Showtips("已取消收藏");
+                helper.Delete("favorite_test", "id", item.id.ToString());
+                helper.CloseSqlConnection();
+                favorite.GetComponent<Image>().sprite = Resources.Load<Sprite>("Ui/btn_like_nor");
+                Favoriteview favoriteview = FindObjectOfType<Favoriteview>();
+
+                if (!favoriteview.favoritegameobjects.ContainsKey(item.id)) return;
+                Destroy(favoriteview.favoritegameobjects[item.id]);
+                favoriteview.favoritegameobjects.Remove(item.id);
+                if (!favoriteview.favoriteoperation.favorite.ContainsKey(item.id)) return;
+                favoriteview.favoriteoperation.favorite.Remove(item.id);
+                return;
+            }
+
+            string itemjson = JsonUtility.ToJson(item);
+
+            helper.InsertInto("favorite_test", new string[] { item.id.ToString(), item.itemname, itemjson });
+            Uimanager.Getinstance().Showtips("已添加至收藏");
+            favorite.GetComponent<Image>().sprite = Resources.Load<Sprite>("Ui/btn_like_sel");
         }
 
         /// <summary>
@@ -244,6 +309,7 @@ namespace SeekWhale
         {
             Texture2D t2d = new Texture2D(128, 128, TextureFormat.RGB24, false);
             t2d.LoadImage(_bytes);
+
             markerlessimage.sprite = Sprite.Create(t2d, new Rect(0, 0, 128, 128), new Vector2(0.5f, 0.5f), 100, 0, SpriteMeshType.FullRect);
         }
 

@@ -50,6 +50,24 @@ namespace SeekWhale
             return File.ReadAllBytes(_path);
         }
 
+        public static byte[] Getfilefromurl(string _filepath)
+        {
+            byte[] mbytes=null;
+            if (_filepath.StartsWith("http") || _filepath.StartsWith("https"))
+            {
+                //download file from remote
+            }
+            else
+            {
+                //download file from localdisk
+                if (Fileexist(_filepath))
+                {
+                    mbytes = Filetobytes(_filepath);                                        
+                }
+            }
+            return mbytes;
+        }
+
         public static string Generatefilename(string _endwith)
         {
             string filename = null;

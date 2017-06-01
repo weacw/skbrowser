@@ -77,10 +77,9 @@ namespace SeekWhale
                 Uistack.Getinstance().Return(2); 
             });
 
-            //takephotoorrecord.triggers.Add(AddEntryevent(EventTriggerType.PointerDown, () => FindObjectOfType<Takephotoorrecord>().Dooperationdown()));
-            //takephotoorrecord.triggers.Add(AddEntryevent(EventTriggerType.PointerUp, () => FindObjectOfType<Takephotoorrecord>().Dooperationup()));
             dropdown.onClick.AddListener(() => Onclickdropdown());
             dropup.onClick.AddListener(() => Onclickdropup());
+            
             Takephotoorrecord.Getinstance().Recording.onrecorded = Onrecorded;
             Takephotoorrecord.Getinstance().Recording.onrecording = Updaterecordingprogress;
         }

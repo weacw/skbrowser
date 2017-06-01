@@ -49,7 +49,7 @@ namespace SeekWhale
             string filename = Fileoperation.Generatefilename(".jpg");
             byte[] bytes = t2d.EncodeToJPG();
             Fileoperation.Writefiletodisk(Scannermanager.Getinstance().projectconfig.photopath, filename, bytes);
-            Crossplatformbridge.Getinstance().Savephoto(Scannermanager.Getinstance().projectconfig.photopath+"/"+filename);
+            Crossplatformbridge.Getinstance().Savephoto(Scannermanager.Getinstance().projectconfig.projectname+"/"+filename);
             if (doingafter != null) doingafter.Invoke();
         }
     }

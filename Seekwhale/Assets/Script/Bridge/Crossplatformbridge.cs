@@ -12,8 +12,6 @@ namespace SeekWhale
 	* Copyright (c) SeekWhale. All rights reserved.
 	*/
 
-    using System.Collections;
-    using System.Collections.Generic;
     using UnityEngine;
 
     public class Crossplatformbridge : Singleton<Crossplatformbridge>
@@ -100,6 +98,7 @@ namespace SeekWhale
                     break;
 
                 case RuntimePlatform.Android:
+                    Debug.Log(_filepath);
                     Calljavabridge(_filepath, "Startsavephoto");
                     break;
             }

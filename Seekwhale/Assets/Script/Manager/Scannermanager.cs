@@ -33,6 +33,7 @@ namespace SeekWhale
 
         public void Awake()
         {
+            if(projectconfig!=null)
             projectconfig.Setup();            
         }
 

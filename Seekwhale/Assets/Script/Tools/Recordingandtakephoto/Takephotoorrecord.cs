@@ -10,8 +10,6 @@ namespace SeekWhale
 	* Copyright (c) SeekWhale. All rights reserved.
 	*/
 
-    using System.Collections;
-    using System.Collections.Generic;
     using UnityEngine;
 
     public class Takephotoorrecord : Singleton<Takephotoorrecord>

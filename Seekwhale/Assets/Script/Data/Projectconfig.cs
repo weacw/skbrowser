@@ -31,14 +31,14 @@
         public string recordingpath;
         public string photopath;
         public string databasepath;
-
+        public string thumbnailspath;
 
         private const string photofolder = "photo";
         private const string recordingfolder = "record";
         private const string assetmodulsfolder = "asset";
         private const string databasefolder = "database";
         private const string marklessfolder = "marklessimage";
-
+        private const string thumbnailsfolder = "thumbnails";
         /// <summary>
         /// 设置项目文件夹、路径等
         /// </summary>
@@ -69,6 +69,7 @@
             assetmodulspath = Createforld(System.IO.Path.Combine(appenvironmentalpath, assetmodulsfolder));
             databasepath = Createforld(System.IO.Path.Combine(appenvironmentalpath, databasefolder));
             marklesspath = Createforld(System.IO.Path.Combine(appenvironmentalpath, marklessfolder));
+            thumbnailspath = Createforld(System.IO.Path.Combine(appenvironmentalpath, thumbnailsfolder));
         }
 
 

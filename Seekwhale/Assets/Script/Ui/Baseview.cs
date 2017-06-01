@@ -11,9 +11,7 @@ namespace SeekWhale
 	*/
 
     using System.Collections;
-    using System.Collections.Generic;
     using UnityEngine;
-    using UnityEngine.UI;
     using DG.Tweening;
     public abstract class Baseview : MonoBehaviour
     {
@@ -74,7 +72,7 @@ namespace SeekWhale
 
                     break;
             }
-            tweeners.SetEase(actioncurve);
+         //   tweeners.SetEase(actioncurve);
             if (ontweenover != null)
                 tweeners.OnComplete(ontweenover.Invoke);
         }

@@ -20,7 +20,6 @@
         public Button showcase;
         public Button menu;
         public Button gotoscan;
-        
         public override void Initview()
         {
             base.Initview();
@@ -30,28 +29,37 @@
 
         public override void Bindingeventstobtn()
         {
+
+            //需要隐藏的界面
             Baseview hide = Uimanager.Getinstance().Getviewfromviewid(typeof(Mainview).Name);
-            Debug.Log("ADD");
+
+
+            //打开showcase view
+            Baseview showcaseview = Uimanager.Getinstance().Getviewfromviewid(typeof(Showcaseview).Name);
             showcase.onClick.AddListener(() =>
             {
-                Baseview show = Uimanager.Getinstance().Getviewfromviewid(typeof(Showcaseview).Name);
-                Uistack.Getinstance().Openview(show, Viewstatus.SHOW);
+                
+                Uistack.Getinstance().Openview(showcaseview, Viewstatus.SHOW);
                 Uistack.Getinstance().Openview(hide, Viewstatus.SHOW);
             });
 
+
+            //打开menu view
+            Baseview menuview = Uimanager.Getinstance().Getviewfromviewid(typeof(Menuview).Name);
             menu.onClick.AddListener(() =>
             {
-                Baseview show = Uimanager.Getinstance().Getviewfromviewid(typeof(Menuview).Name);
-                Uistack.Getinstance().Openview(show, Viewstatus.SHOW);
+                
+                Uistack.Getinstance().Openview(menuview, Viewstatus.SHOW);
                 Uistack.Getinstance().Openview(hide, Viewstatus.SHOW);
             });
 
+
+            //打开scan view
+            Baseview scanview = Uimanager.Getinstance().Getviewfromviewid(typeof(Scanview).Name);
             gotoscan.onClick.AddListener(() =>
             {
                 Cloudrecoeventhandler.Getinstance().Restartscanning();
-
-                Baseview show = Uimanager.Getinstance().Getviewfromviewid(typeof(Scanview).Name);
-                Uistack.Getinstance().Openview(show, Viewstatus.SHOW);
+                Uistack.Getinstance().Openview(scanview, Viewstatus.SHOW);
                 Uistack.Getinstance().Openview(hide, Viewstatus.SHOW);
             });
         }

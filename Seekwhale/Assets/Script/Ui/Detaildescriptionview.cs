@@ -12,8 +12,6 @@ namespace SeekWhale
 * Copyright (c) SeekWhale. All rights reserved.
 */
 
-    using System.Collections;
-    using System.Collections.Generic;
     using UnityEngine;
 
     public class Detaildescriptionview : Baseview
@@ -22,11 +20,11 @@ namespace SeekWhale
         public Detailsetup detailsetup;
         public override void Bindingeventstobtn()
         {
-            Baseview hide = Uimanager.Getinstance().Getviewfromviewid(typeof(Showcaseview).Name);
+         //   Baseview hide = Uimanager.Getinstance().Getviewfromviewid(typeof(Showcaseview).Name);
 
             returnbtn.onClick.AddListener(() =>
             {
-                Uistack.Getinstance().Return(2);
+                Uistack.Getinstance().Return();
             });
         }
 
